@@ -33,3 +33,8 @@
           - vlc
           - xrdp
           - zsh
+
+    - name: Setup ZSH
+      ansible.builtin.copy:
+        src: zsh/.zshrc
+        dest: ~/.zshrc
