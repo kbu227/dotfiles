@@ -34,6 +34,11 @@
           - xrdp
           - zsh
 
+    - name: Set login shell of user {{ login_user }} to `zsh` with `usermod`
+      ansible.builtin.command: usermod --shell /usr/bin/zsh {{ login_user }}
+      become: true
+      changed_when: false
+
     - name: Setup ZSH
       ansible.builtin.copy:
         src: zsh/.zshrc
