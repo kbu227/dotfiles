@@ -1,7 +1,7 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
-SH_THEME="afowler"
+ZSH_THEME="afowler"
 plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
