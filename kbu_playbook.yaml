@@ -1,45 +1,47 @@
 ---
+
 - hosts: localhost
-  become: false
+  become: true
+  vars:
+  package_list:
+  - cmake
+  - gcc
+  - git
+  - htop
+  - make
+  - mc
+  - ncdu
+  - openssh-server
+  - python3
+  - python3-pip
+  - tmux
+  - vim
+  - zsh
+
   tasks:
-    - name: Install packages
-      become: true
-      ansible.builtin.apt:
-        pkg:
-          - btop
-          - cmake
-          - flameshot
-          - gcc
-          - git
-          - htop
-          - lolcat
-          - make
-          - mc
-          - ncdu
-          - neovim
-          - npm
-          - openssh-server
-          - podman
-          - python3
-          - python3-pip
-          - ranger
-          - remmina
-          - tmux
-          - tcptrack
-          - terminator
-          - toilet
-          - ufw
-          - vim
-          - vlc
-          - xrdp
-          - zsh
 
-    - name: Set login shell of user {{ login_user }} to `zsh` with `usermod`
-      ansible.builtin.command: usermod --shell /usr/bin/zsh {{ login_user }}
-      become: true
-      changed_when: false
+  - name: Sync packages
+    ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+    loop: "{{ package_list }}"
 
-    - name: Setup ZSH
-      ansible.builtin.copy:
-        src: zsh/.zshrc
-        dest: ~/.zshrc
+  - name: Declarative pckg removal
+    ansible.builtin.shell: |
+    comm -23 <(dpkg --get-selections | awk '{print $1}' | sort) <(printf "%s\n" {{ package_list | join('\n') }} | sort) | xargs -r sudo apt-get purge -y
+    args:
+    executable: /bin/bash
+
+  - name: set zsh as the main shell
+    ansible.builtin.command: usermod --shell /usr/bin/zsh {{ ansible_user_id }}
+    become: true
+    changed_when: false
+
+  - name: copy zshrc
+    ansible.builtin.copy:
+    src: zsh/.zshrc
+    dest: /home/{{ ansible_user_id }}/.zshrc
+    owner: "{{ ansible_user_id }}"
+    group: "{{ ansible_user_id }}"
+    mode: '0644'
+
