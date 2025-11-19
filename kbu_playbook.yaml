@@ -1,36 +1,25 @@
 ---
 
 - hosts: localhost
-  become: true
-  vars:
-  package_list:
-  - cmake
-  - gcc
-  - git
-  - htop
-  - make
-  - mc
-  - ncdu
-  - openssh-server
-  - python3
-  - python3-pip
-  - tmux
-  - vim
-  - zsh
-
+  become: false
   tasks:
-
   - name: Sync packages
+    become: true
     ansible.builtin.package:
-    name: "{{ item }}"
-    state: present
-    loop: "{{ package_list }}"
-
-  - name: Declarative pckg removal
-    ansible.builtin.shell: |
-    comm -23 <(dpkg --get-selections | awk '{print $1}' | sort) <(printf "%s\n" {{ package_list | join('\n') }} | sort) | xargs -r sudo apt-get purge -y
-    args:
-    executable: /bin/bash
+        name:
+          - cmake
+          - gcc
+          - git
+          - htop
+          - make
+          - mc
+          - ncdu
+          - openssh-server
+          - python3
+          - python3-pip
+          - tmux
+          - vim
+          - zsh
 
   - name: set zsh as the main shell
     ansible.builtin.command: usermod --shell /usr/bin/zsh {{ ansible_user_id }}
@@ -39,9 +28,9 @@
 
   - name: copy zshrc
     ansible.builtin.copy:
-    src: zsh/.zshrc
-    dest: /home/{{ ansible_user_id }}/.zshrc
-    owner: "{{ ansible_user_id }}"
-    group: "{{ ansible_user_id }}"
-    mode: '0644'
+        src: zsh/.zshrc
+        dest: /home/{{ ansible_user_id }}/.zshrc
+        owner: "{{ ansible_user_id }}"
+        group: "{{ ansible_user_id }}"
+        mode: '0644'
 
