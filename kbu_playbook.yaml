@@ -26,6 +26,22 @@
     become: true
     changed_when: false
 
+  - name: Check if Oh My Zsh installed
+    stat:
+      path: "{{ ansible_env.HOME }}/.oh-my-zsh"
+    register: omz_installed
+
+  - name: download ansible installer
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+      dest: /tmp/install_omz.sh
+      mode: '0755'
+    when: not omz_installed.stat.exists
+
+  - name: install omz
+    ansible.builtin.command: /tmp/install_omz.sh
+    when: not omz_installed.stat.exists
+
   - name: copy zshrc
     ansible.builtin.copy:
         src: zsh/.zshrc
