@@ -1,6 +1,9 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+#opts 
+setopt CORRECT
+
 ZSH_THEME="afowler"
 plugins=(git)
 
@@ -11,3 +14,6 @@ alias fd=fdfind
 
 export VISUAL=vim
 export EDITOR=vim
+
+# python
+export PATH="$HOME/.local/bin:$PATH"
