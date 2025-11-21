@@ -18,6 +18,7 @@
           - tmux
           - vim
           - zsh
+          - tldr
 
     - name: set zsh as the main shell
       ansible.builtin.command: usermod --shell /usr/bin/zsh {{ ansible_user_id }}
