@@ -57,3 +57,8 @@
         group: "{{ ansible_user_id }}"
         mode: '0644'
 
+    - name: create dir for repos
+      ansible.builtin.file:
+        path: /home/{{ ansible_user_id }}/Repos
+        state: directory
+        mode: '0755'
