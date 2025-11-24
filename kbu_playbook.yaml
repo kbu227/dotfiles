@@ -20,14 +20,6 @@
       - zsh
       - tldr
 
-  - name: install nodejs and npm
-    become: true
-    ansible.builtin.package:
-      name:
-      - npm
-      - nodejs
-    when: install_nodejs | int == 1
-
   - name: set zsh as the main shell
     ansible.builtin.command: usermod --shell /usr/bin/zsh {{ ansible_user_id }}
     become: true
@@ -70,3 +62,26 @@
       path: /home/{{ ansible_user_id }}/Repos
       state: directory
       mode: '0755'
+
+  # section for NODE.JS and NPM
+  - name: download nvm install script
+    ansible.builtin.get_url:
+      url: https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh
+      dest: /tmp/install_nvm.sh
+      mode: '0755'
+    when: install_nodejs | int == 1
+
+  - name: run nvm installer
+    ansible.builtin.shell: |
+      bash /tmp/install_nvm.sh
+    args:
+      executable: /bin/bash
+    when: install_nodejs | int == 1
+
+  - name: install nodejs using nvm
+    ansible.builtin.shell: |
+      source "/home/{{ ansible_user_id }}/.nvm/nvm.sh"
+      nvm install 24
+    args:
+      executable: /bin/bash
+    when: install_nodejs | int == 1
