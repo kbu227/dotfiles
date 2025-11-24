@@ -7,4 +7,4 @@ if ! command -v ansible >/dev/null 2>&1; then
 sudo apt install -y ansible
 fi
 
-ansible-playbook kbu_playbook.yaml --ask-become-pass
+ansible-playbook kbu_playbook.yaml -v -i inventory --ask-become-pass
