@@ -17,6 +17,7 @@ export EDITOR=vim
 
 # python
 export PATH="$HOME/.local/bin:$PATH"
+alias activate='source $(poetry env info --path)/bin/activate'
 
 # nvm
 export NVM_DIR="$HOME/.nvm"
