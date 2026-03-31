@@ -11,6 +11,7 @@ source $ZSH/oh-my-zsh.sh
 
 alias gl="git log --all --decorate --oneline --graph"
 alias fd=fdfind
+alias rm='gio trash'
 
 export VISUAL=vim
 export EDITOR=vim
