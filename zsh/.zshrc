@@ -9,7 +9,9 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+# gitowe przydasie
 alias gl="git log --all --decorate --oneline --graph"
+alias s="git status"
 alias fd=fdfind
 alias rm='gio trash'
 

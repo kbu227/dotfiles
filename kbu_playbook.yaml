@@ -85,3 +85,11 @@
     args:
       executable: /bin/bash
     when: install_nodejs | int == 1
+
+  - name: cron tasks
+    cron:
+      name: "downloads mess auto cleanup"
+      user: "{{ ansible_user_id }}"
+      minute: "0"
+      hour: "*"
+      job: 'find /home/{{ ansible_user_id }}/Downloads -type f -mtime +14 -exec gio trash {} \;'
